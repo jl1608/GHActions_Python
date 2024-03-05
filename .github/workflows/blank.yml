@@ -1,0 +1,67 @@
+# This is a basic workflow to help you get started with Actions
+name: Protect Python PR
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on pull request events but only for the "main" branch
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # INSTALL AND SETUP PYTHON ON COMPUTE
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      # INSTALL REQUIRED LIBS
+      - name: Install Black
+        run: |
+          echo Installing black...
+          pip install black
+
+      - name: Install Pytest
+        run: |
+          echo Installing pytest...
+          pip install pytest
+
+      - name: Install Pytest-Cov
+        run:  |
+          echo Installing pytest-cov...
+          pip install pytest-cov
+
+      - name: Check Formatting With Black
+        run: black --check ./
+
+      - name: Set status check
+        id: status-check
+        run: echo "::set-output name=status::$(black --check ./src && echo 'pass' || echo 'fail')"
+
+      - name: Report status
+        if: ${{ needs.status-check.outputs.status == 'fail' }}
+        run: echo "Black formatting check failed. Please format your code using Black."
+        
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+            - name: Run pytest
