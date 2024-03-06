@@ -10,7 +10,7 @@ on:
 jobs:
   format-check:
     runs-on: ubuntu-latest
-    uses: .github/workflows/build-ubuntu.yaml
+    uses: jl1608/GHActions_Python/.github/workflows/build-ubuntu.yaml
     steps:
       - name: Check Formatting With Black
         run: black --check ./
