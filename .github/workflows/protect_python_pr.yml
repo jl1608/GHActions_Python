@@ -60,8 +60,8 @@ jobs:
           pip install pytest-cov
           echo Installed pytest and pytest-cov libs...
 
-      # - name: Check all test cases are passing
-      #   run: pytest ./pytest_example.py
+      - name: Check all test cases are passing
+        run: pytest ./pytest_example.py
     
       # - name: Set status check
       #   id: status-check
@@ -71,6 +71,6 @@ jobs:
       #   if: ${{ steps.status-check.outputs.status == 'fail' }}
       #   run: echo "Pytest formatting check failed. Please ensure all test cases are passing."
 
-      - name: Report status (check Pass)
-        if: ${{ steps.status-check.outputs.status == 'pass' }}
-        run: echo "Pytest check passed."
+      # - name: Report status (check Pass)
+      #   if: ${{ steps.status-check.outputs.status == 'pass' }}
+      #   run: echo "Pytest check passed."
