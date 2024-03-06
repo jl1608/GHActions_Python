@@ -32,7 +32,7 @@ jobs:
 
       - name: Set status check
         id: status-check
-        run: echo "::set-output name=status::$(black --check ./ && echo 'pass' || echo 'fail')"
+        run: echo "status=$(black --check ./ && echo 'pass' || echo 'fail')" >> $GITHUB_OUTPUT
 
       - name: Report status (check Fail)
         if: ${{ steps.status-check.outputs.status == 'fail' }}
@@ -65,7 +65,7 @@ jobs:
     
       - name: Set status check
         id: status-check
-        run: echo "::set-output name=status::$(pytest ./pytest_example.py && echo 'pass' || echo 'fail')"
+        run: echo "status=$(pytest ./pytest_example.py && echo 'pass' || echo 'fail')" >> $GITHUB_OUTPUT
 
       - name: Report status (check Fail)
         if: ${{ steps.status-check.outputs.status == 'fail' }}
