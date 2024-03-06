@@ -35,13 +35,11 @@ jobs:
         run: echo "::set-output name=status::$(black --check ./ && echo 'pass' || echo 'fail')"
 
       - name: Report status (check Fail)
-        needs: status-check
-        if: ${{ needs.status-check.outputs.status == 'fail' }}
+        if: ${{ steps.status-check.outputs.status == 'fail' }}
         run: echo "Black formatting check failed. Please format your code using Black."
 
       - name: Report status (check Pass)
-        needs: status-check
-        if: ${{ needs.status-check.outputs.status == 'pass' }}
+        if: ${{ steps.status-check.outputs.status == 'pass' }}
         run: echo "Black formatting check passed."
 
   test:
