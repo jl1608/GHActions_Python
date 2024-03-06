@@ -4,19 +4,19 @@ on:
   pull_request:
     branches: [ "main" ]
 
-  # Allows you to run this workflow manually from the Actions tab
+  # allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
   checkout:
     runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
   build:
     runs-on: ubuntu-latest
     steps:
-      # Install python on compute
+      # install python on compute
       - name: Install Python
         uses: actions/setup-python@v2
         with:
@@ -30,12 +30,15 @@ jobs:
           pip install pytest-cov
           echo Installed black, pytest and pytest-cov libs...
 
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
       - name: Check Formatting With Black
         run: black --check ./
 
       - name: Set status check
         id: status-check
-        run: echo "::set-output name=status::$(black --check ./src && echo 'pass' || echo 'fail')"
+        run: echo "::set-output name=status::$(black --check ./ && echo 'pass' || echo 'fail')"
 
       - name: Report status (check Fail)
         if: ${{ needs.status-check.outputs.status == 'fail' }}
@@ -44,3 +47,21 @@ jobs:
       - name: Report status (check Pass)
         if: ${{ needs.status-check.outputs.status == 'pass' }}
         run: echo "Black formatting check passed."
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check all test cases are passing
+        run: pytest ./pytest_example.py
+    
+      - name: Set status check
+        id: status-check
+        run: echo "::set-output name=status::$(pytest ./pytest_example.py && echo 'pass' || echo 'fail')"
+
+      - name: Report status (check Fail)
+        if: ${{ needs.status-check.outputs.status == 'fail' }}
+        run: echo "Pytest formatting check failed. Please ensure all test cases are passing."
+
+      - name: Report status (check Pass)
+        if: ${{ needs.status-check.outputs.status == 'pass' }}
+        run: echo "Pytest check passed."
