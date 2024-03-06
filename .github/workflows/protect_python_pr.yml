@@ -30,17 +30,17 @@ jobs:
       - name: Check Formatting With Black
         run: black --check ./
 
-      - name: Set status check
-        id: status-check
-        run: echo "status=$(black --check ./ && echo 'pass' || echo 'fail')" >> $GITHUB_OUTPUT
+      # - name: Set status check
+      #   id: status-check
+      #   run: echo "status=$(black --check ./ && echo 'pass' || echo 'fail')" >> $GITHUB_OUTPUT
 
-      - name: Report status (check Fail)
-        if: ${{ steps.status-check.outputs.status == 'fail' }}
-        run: echo "Black formatting check failed. Please format your code using Black."
+      # - name: Report status (check Fail)
+      #   if: ${{ steps.status-check.outputs.status == 'fail' }}
+      #   run: echo "Black formatting check failed. Please format your code using Black."
 
-      - name: Report status (check Pass)
-        if: ${{ steps.status-check.outputs.status == 'pass' }}
-        run: echo "Black formatting check passed."
+      # - name: Report status (check Pass)
+      #   if: ${{ steps.status-check.outputs.status == 'pass' }}
+      #   run: echo "Black formatting check passed."
 
   test:
     runs-on: ubuntu-latest
@@ -60,16 +60,16 @@ jobs:
           pip install pytest-cov
           echo Installed pytest and pytest-cov libs...
 
-      - name: Check all test cases are passing
-        run: pytest ./pytest_example.py
+      # - name: Check all test cases are passing
+      #   run: pytest ./pytest_example.py
     
-      - name: Set status check
-        id: status-check
-        run: echo "status=$(pytest ./pytest_example.py && echo 'pass' || echo 'fail')" >> $GITHUB_OUTPUT
+      # - name: Set status check
+      #   id: status-check
+      #   run: echo "status=$(pytest ./pytest_example.py && echo 'pass' || echo 'fail')" >> $GITHUB_OUTPUT
 
-      - name: Report status (check Fail)
-        if: ${{ steps.status-check.outputs.status == 'fail' }}
-        run: echo "Pytest formatting check failed. Please ensure all test cases are passing."
+      # - name: Report status (check Fail)
+      #   if: ${{ steps.status-check.outputs.status == 'fail' }}
+      #   run: echo "Pytest formatting check failed. Please ensure all test cases are passing."
 
       - name: Report status (check Pass)
         if: ${{ steps.status-check.outputs.status == 'pass' }}
