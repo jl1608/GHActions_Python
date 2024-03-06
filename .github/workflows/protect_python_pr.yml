@@ -10,8 +10,23 @@ on:
 jobs:
   format-check:
     runs-on: ubuntu-latest
-    uses: .github/workflows/build-ubuntu.yaml
     steps:
+      # checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      # install python on compute
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      # install third-party libs
+      - name: Install Testing and Formatting Libs
+        run: |
+          pip install black
+          pip install pytest
+          pip install pytest-cov
+          echo Installed black lib...
+
       - name: Check Formatting With Black
         run: black --check ./
 
@@ -29,8 +44,22 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    uses: .github/workflows/build-ubuntu.yaml
     steps:
+      # checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      # install python on compute
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      # install third-party libs
+      - name: Install Testing and Formatting Libs
+        run: |
+          pip install pytest
+          pip install pytest-cov
+          echo Installed pytest and pytest-cov libs...
+
       - name: Check all test cases are passing
         run: pytest ./pytest_example.py
     
